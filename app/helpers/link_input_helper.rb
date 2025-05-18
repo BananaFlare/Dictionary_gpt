@@ -1,0 +1,2 @@
+module LinkInputHelper
+end

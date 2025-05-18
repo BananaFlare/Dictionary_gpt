@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dictionary: one
+  foreign_word: MyString
+  transcription: MyString
+  translation: MyString
+  example: MyText
+
+two:
+  dictionary: two
+  foreign_word: MyString
+  transcription: MyString
+  translation: MyString
+  example: MyText
