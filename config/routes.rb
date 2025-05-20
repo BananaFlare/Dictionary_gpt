@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   end
   get "up" => "rails/health#show", as: :rails_health_check
   post "/input_link",to: "input_link#accept_link"
+  resources :dictionaries
 end

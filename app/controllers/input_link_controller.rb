@@ -1,4 +1,4 @@
-require_relative '../services/dictionary_service'
+require_relative '../services/DictionaryService'
 class InputLinkController < ApplicationController
   def accept_link
     @link=params[:body][:link].chomp
@@ -6,6 +6,6 @@ class InputLinkController < ApplicationController
     pattern = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/
     pattern_test=/file:\/\/\/[^\s]+\.html/
     Rails.logger.info "линка инвалид " unless @link.match?(pattern) || @link.match?(pattern_test)
-    DictionaryService.link_processing(@link)
+    DictionaryService.words_table_create(@link)
   end
 end
