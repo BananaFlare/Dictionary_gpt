@@ -16,6 +16,12 @@
             <div class="info-item">
                 <strong>Email:</strong> <%= @user.email %>
             </div>
+
+            <% if @user.admin? %>
+              <div class="admin-panel" style="margin-top: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+                <strong>Администратор:</strong> У вас есть доступ к административным функциям.
+              </div>
+            <% end %>
          
         </div>
         
@@ -23,9 +29,6 @@
             Здесь вы можете просмотреть и изменить свои личные данные.
             Для изменения информации обратитесь к администратору системы.
         </p>
-
-        <%= link_to 'Зарегистрироваться', signup_path, class: "button" %>
-        <%= button_to 'Выйти', logout_path, method: :delete, class: "button" %>
     </div>
 </body>
 </html>
