@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main" something
 gem "rails", "~> 8.0.2"
 gem 'bcrypt', '~> 3.1.7'
 
