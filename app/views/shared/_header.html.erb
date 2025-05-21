@@ -1,0 +1,10 @@
+<nav class="main-nav">
+  <%= link_to "Главная", root_path, class: "nav-link" %>
+  <%= link_to "Личный кабинет", profile_path, class: "nav-link no-color-change" %>
+  <% if session[:user_id].present? %>
+    <%= button_to 'Выйти', logout_path, method: :delete, class: "btn btn-link nav-link" %>
+  <% else %>
+    <%= link_to 'Авторизация', login_path, class: "nav-link" %>
+    <%= link_to 'Зарегистрироваться', signup_path, class: "nav-link" %>
+  <% end %>
+</nav>
