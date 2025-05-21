@@ -1,3 +1,5 @@
 class HomeController < ApplicationController
-  def index; end
+  def index
+    LoggerService.info("Открыта главная страница") if LoggerService.enabled?
+  end
 end

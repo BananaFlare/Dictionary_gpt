@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет</title>
-    
 </head>
 <body>
     <div class="container">
@@ -16,16 +15,16 @@
             <div class="info-item">
                 <strong>Email:</strong> <%= @user.email %>
             </div>
-         
         </div>
         
         <p class="text-block">
             Здесь вы можете просмотреть и изменить свои личные данные.
             Для изменения информации обратитесь к администратору системы.
         </p>
-
+        
         <%= link_to 'Зарегистрироваться', signup_path, class: "button" %>
         <%= button_to 'Выйти', logout_path, method: :delete, class: "button" %>
+        <%= link_to 'На главную', root_path, class: "button" %>
     </div>
 </body>
 </html>

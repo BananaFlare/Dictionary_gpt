@@ -1,0 +1,33 @@
+<h1>Регистрация</h1>
+
+<%= form_with model: @user, url: users_path do |form| %>
+  <% if @user.errors.any? %>
+    <div class="errors">
+      <h2>Ошибки при заполнении формы:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :email, "Email" %>
+    <%= form.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :password, "Пароль" %>
+    <%= form.password_field :password, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :password_confirmation, "Подтверждение пароля" %>
+    <%= form.password_field :password_confirmation, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit "Зарегистрироваться", class: "btn btn-primary" %>
+  </div>
+<% end %>

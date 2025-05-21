@@ -1,0 +1,46 @@
+<nav class="main-nav">
+  <%= link_to "Главная", root_path, class: "nav-link" %>
+  <%#= link_to "О нас", about_path, class: "nav-link" %>
+  <%= link_to "О проекте", root_path, class: "nav-link" %>
+  <%#= link_to "Контакты", contact_path, class: "nav-link" %>
+  <%#= link_to "Блог", posts_path, class: "nav-link" %>
+  <%= link_to "Авторизация", login_path, class: "nav-link" %>
+  <%= link_to "Личный кабинет", profile_path, class: "nav-link no-color-change" %>
+</nav>
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger" role="alert">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success" role="alert">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<div class="centered-input-container mt-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <%= form_with url: login_path, method: :post, local: true do |form| %>
+        <div class="col-md-6 col-lg-4">
+          <%= form.label :email, "Email" %><br>
+          <%= form.email_field :email, required: true, class: "form-control custom-input" %>
+        </div>
+        <div class="col-md-6 col-lg-4 mt-3">
+          <%= form.label :password, "Пароль" %><br>
+          <%= form.password_field :password, required: true, class: "form-control custom-input" %>
+        </div>
+        <div class="col-md-6 col-lg-4 mt-3 text-center">
+          <%= form.submit "Войти", class: "btn btn-primary btn-lg w-100" %>
+        </div>
+      <% end %>
+    </div>
+    <div class="row justify-content-center mt-3">
+      <div class="col-md-6 col-lg-4 text-center">
+        <%= link_to 'Зарегистрироваться', signup_path, class: "btn btn-secondary w-100" %>
+      </div>
+    </div>
+  </div>
+</div>
