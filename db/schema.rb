@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_20_192803) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_21_120000) do
   create_table "dictionaries", force: :cascade do |t|
     t.string "link"
     t.datetime "created_at", null: false
