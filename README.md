@@ -44,3 +44,5 @@ rails s
 ```bash
 http://localhost:3000
 ```
+
+Удачного использования!
