@@ -1,0 +1,36 @@
+<h1>Управление пользователями</h1>
+
+<%= form_with url: admin_users_path, method: :get, local: true do |form| %>
+  <div>
+    <%= form.label :q, "Поиск по email:" %>
+    <%= form.text_field :q, value: @q %>
+    <%= form.submit "Поиск" %>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Роль</th>
+      <th>Статус</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.admin? ? "Админ" : "Пользователь" %></td>
+        <td><%= user.enabled ? "Активен" : "Заблокирован" %></td>
+        <td>
+          <% unless user.admin? %>
+            <%= button_to (user.enabled ? "Заблокировать" : "Разблокировать"), toggle_block_admin_path(user), method: :post %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

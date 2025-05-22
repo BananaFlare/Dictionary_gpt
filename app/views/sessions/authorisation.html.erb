@@ -1,32 +1,24 @@
+<h1>Авторизация</h1>
+
 <% if flash[:alert] %>
-  <div class="alert alert-danger" role="alert">
-    <%= flash[:alert] %>
-  </div>
+  <% if flash[:alert] == 'Ваша учётная запись заблокирована. Обратитесь к администратору.' %>
+    <p>Ваша учётная запись заблокирована.</p>
+    <p>Пожалуйста, обратитесь к администратору по электронной почте: admin@example.com</p>
+  <% else %>
+    <p style="color: red;"><%= flash[:alert] %></p>
+  <% end %>
 <% end %>
 
-<% if flash[:notice] %>
-  <div class="alert alert-success" role="alert">
-    <%= flash[:notice] %>
+<%= form_with url: '/login', method: :post do |form| %>
+  <div>
+    <%= form.label :email, 'Email' %><br>
+    <%= form.email_field :email, required: true %>
+  </div>
+  <div>
+    <%= form.label :password, 'Пароль' %><br>
+    <%= form.password_field :password, required: true %>
+  </div>
+  <div>
+    <%= form.submit 'Войти' %>
   </div>
 <% end %>
-
-<div class="centered-input-container mt-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <%= form_with url: login_path, method: :post, local: true do |form| %>
-        <div class="col-md-6 col-lg-4">
-          <%= form.label :email, "Email" %><br>
-          <%= form.email_field :email, required: true, class: "form-control custom-input" %>
-        </div>
-        <div class="col-md-6 col-lg-4 mt-3">
-          <%= form.label :password, "Пароль" %><br>
-          <%= form.password_field :password, required: true, class: "form-control custom-input" %>
-        </div>
-      <div class="col-md-6 col-lg-4 mt-3 text-center d-flex gap-2 justify-content-center">
-        <%= universal_button "Войти", type: "submit", class: "btn btn-primary btn-lg flex-grow-1" %>
-        <%= link_to 'Зарегистрироваться', signup_path, class: "btn btn-secondary btn-lg flex-grow-1" %>
-      </div>
-    <% end %>
-  </div>
-  </div>
-</div>

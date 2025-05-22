@@ -1,26 +1,25 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет</title>
-</head>
-<body>
-    <div class="container">
-        <div class="profile-header">
-            <h1>Личный кабинет</h1>
-        </div>
-        
-        <div class="profile-info">
-            <div class="info-item">
-                <strong>Email:</strong> <%= @user.email %>
-            </div>
-        </div>
-        
-        <p class="text-block">
-            Здесь вы можете просмотреть и изменить свои личные данные.
-            Для изменения информации обратитесь к администратору системы.
-        </p>
+<div class="container">
+  <div class="profile-header">
+    <h1>Личный кабинет</h1>
+  </div>
+
+  <div class="profile-info">
+    <div class="info-item">
+      <strong>Email:</strong> <%= @user.email %>
     </div>
-</body>
-</html>
+
+    <% if @user.admin? %>
+      <div class="admin-panel" style="margin-top: 20px; padding: 10px; border: 1px solid red; background-color: #ffe6e6;">
+        <strong>Администратор:</strong> У вас есть доступ к административным функциям.
+        <p>
+          <%= link_to 'Управление пользователями', admin_users_path %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+
+  <p class="text-block">
+    Здесь вы можете просмотреть и изменить свои личные данные.
+    Для изменения информации обратитесь к администратору системы.
+  </p>
+</div>

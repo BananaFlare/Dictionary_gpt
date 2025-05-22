@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   def show
     if session[:user_id].present?
       @user = User.find(session[:user_id])
+      Rails.logger.debug "UsersController#show: Loaded user #{@user.email}, admin: #{@user.admin?}"
     else
       redirect_to login_path, alert: 'Пожалуйста, войдите в систему.'
     end
