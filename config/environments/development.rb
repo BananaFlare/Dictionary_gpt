@@ -1,6 +1,12 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  # Уровень логирования: :debug, :info, :warn, :error, :fatal, :unknown
+  config.log_level = :error
+
+  # Отключить вывод предупреждений Sass
+  config.sass.inline_source_maps = false
+  config.sass.line_comments = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Make code changes take effect immediately without server restart.

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет</title>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <h1>Личный кабинет</h1>
+        </div>
+        
+        <div class="profile-info">
+            <div class="info-item">
+                <strong>Email:</strong> <%= @user.email %>
+            </div>
+        </div>
+        
+        <p class="text-block">
+            Здесь вы можете просмотреть и изменить свои личные данные.
+            Для изменения информации обратитесь к администратору системы.
+        </p>
+    </div>
+</body>
+</html>
