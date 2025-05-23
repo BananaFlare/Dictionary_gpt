@@ -1,4 +1,4 @@
-require_relative '../services/dictionary_service'
+require_relative '../services/DictionaryService'
 class InputLinkController < ApplicationController
   def accept_link
     @link=params[:body][:link].chomp
@@ -9,6 +9,6 @@ class InputLinkController < ApplicationController
       LoggerService.info("Ссылка недействительна: #{@link}") if LoggerService.enabled?
     end
 
-    DictionaryService.link_processing(@link)
+    DictionaryService.words_table_create(@link, @current_user)
   end
 end

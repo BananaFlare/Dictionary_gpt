@@ -10,11 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_20_192803) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_22_170737) do
   create_table "dictionaries", force: :cascade do |t|
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_dictionaries_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,5 +40,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_192803) do
     t.index ["dictionary_id"], name: "index_words_on_dictionary_id"
   end
 
+  add_foreign_key "dictionaries", "users"
   add_foreign_key "words", "dictionaries"
 end
