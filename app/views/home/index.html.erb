@@ -2,7 +2,6 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
-        <!-- Увеличенный текст призыва к действию -->
         <div class="text-center mb-4">
           <h2 class="glossary-invite mb-4">Хотите создать Глоссарий?</h2>
         </div>
@@ -18,7 +17,9 @@
             <div class="input-group-append">
               <%= form.submit "Отправить", 
                   class: "btn btn-primary rounded-pill px-4 py-3 fw-bold pulse-on-hover",
-                  data: { disable_with: "Отправка..." }
+                  data: { 
+                    disable_with: "<span class='submit-spinner'></span> Начинаем..." 
+                  }
               %>
             </div>
           </div>
@@ -34,6 +35,13 @@
   </div>
 </div>
 
+<!-- Полноэкранный лоадер с мотивирующими сообщениями -->
+<div id="fullpage-loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 9999; align-items: center; justify-content: center; flex-direction: column;">
+  <div class="loader mb-4"></div>
+  <p id="motivation-text" class="text-center h5 mb-0" style="max-width: 400px;">Подготавливаем материалы для вашего глоссария...</p>
+  <p class="text-muted mt-3" style="font-size: 0.9rem;">Скоро вы станете умнее!</p>
+</div>
+
 <style>
   /* Стили для увеличенного текста */
   .glossary-invite {
@@ -42,6 +50,34 @@
     color: #2d3748;
     letter-spacing: 0.5px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  /* Стили для спиннеров */
+  .submit-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1.2s linear infinite;
+    margin-bottom: 20px !important;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   /* Существующие стили */
@@ -100,3 +136,44 @@
     transform: scale(1.1);
   }
 </style>
+
+<script>
+  // Мотивирующие фразы
+  const motivationPhrases = [
+    "Анализируем ваш текст...",
+    "Скоро вы станете умнее!",
+    "Готовим полезные термины...",
+    "Знания уже на подходе!",
+    "Это будет лучший глоссарий!",
+    "Ваш мозг скоро вырастет!",
+    "Учиться - это круто!",
+    "Глоссарий почти готов!",
+    "Собираем самые важные понятия...",
+    "Секундочку, идет магия обучения!"
+  ];
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.link-form');
+    const fullpageLoader = document.getElementById('fullpage-loader');
+    const motivationText = document.getElementById('motivation-text');
+    
+    if (form) {
+      form.addEventListener('submit', function() {
+        // Показываем лоадер
+        fullpageLoader.style.display = 'flex';
+        
+        // Меняем мотивирующие фразы каждые 3 секунды
+        let phraseIndex = 0;
+        const phraseInterval = setInterval(() => {
+          phraseIndex = (phraseIndex + 1) % motivationPhrases.length;
+          motivationText.textContent = motivationPhrases[phraseIndex];
+        }, 3000);
+        
+        // Остановка при скрытии лоадера (если нужно)
+        // window.addEventListener('loader:hide', () => {
+        //   clearInterval(phraseInterval);
+        // });
+      });
+    }
+  });
+</script>
