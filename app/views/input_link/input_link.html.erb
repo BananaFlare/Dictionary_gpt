@@ -1,8 +1,30 @@
-<nav class="main-nav">
-  <%= link_to "Главная", root_path, class: "nav-link" %>
-  <%#= link_to "О нас", about_path, class: "nav-link" %>
-  <%= link_to "О проекте", root_path, class: "nav-link" %>
-  <%#= link_to "Контакты", contact_path, class: "nav-link" %>
-  <%#= link_to "Блог", posts_path, class: "nav-link" %>
-  <%= link_to "Личный кабинет", profile_path, class: "nav-link" %>
-</nav>
+
+<h1>Select those words you would like to exclude.</h1>
+<%= form_with url: selected_words_path, method: :post do |form| %>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Word</th>
+    <th>Transcription</th>
+    <th>Translation</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @words_array.each do |item| %>
+    <tr>
+      <td>
+        <%= check_box_tag "selected_words", item.foreign_word, false,
+                          class: "row-checkbox" %>
+      </td>
+      <td><%= item.foreign_word%></td>
+      <td><%= item.transcription %></td>
+      <td><%= item.translation %></td>
+      <td><%= item.example %></td>
+    </tr>
+  <% end %>
+    </tbody>
+    </table>
+    <%= form.submit "Обработать выбранные записи", class: "btn" %>
+  <% end %>

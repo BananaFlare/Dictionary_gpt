@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "user_interaction/include_words"
+  get "user_interaction/exclude_words"
   root 'home#index'
   get    '/login',  to: 'sessions#authorisation'
   post   '/login',  to: 'sessions#create'
@@ -10,5 +12,6 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
   post "/input_link",to: "input_link#accept_link"
+  post "/selected_words", to: "user_interaction#exclude_words"
   resources :dictionaries
 end

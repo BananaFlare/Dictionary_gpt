@@ -9,6 +9,7 @@ class InputLinkController < ApplicationController
       LoggerService.info("Ссылка недействительна: #{@link}") if LoggerService.enabled?
     end
 
-    DictionaryService.words_table_create(@link, @current_user)
+    @words_array = DictionaryService.words_table_create(@link, @current_user)
+    render :'input_link/input_link'
   end
 end
