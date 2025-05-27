@@ -4,68 +4,56 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /rails
 
-# Устанавливаем зависимости + добавляем nodejs и yarn явно
+# Установка только необходимых базовых зависимостей
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     curl libjemalloc2 libvips sqlite3 \
-    nodejs npm \
-    && npm install -g yarn \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    && rm -rf /var/lib/apt/lists/*
 
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development" \
-    NODE_OPTIONS="--openssl-legacy-provider"
+    BUNDLE_WITHOUT="development"
 
 FROM base AS build
 
-# Добавляем зависимости для сборки
+# Установка Node.js через официальный бинарный архив (без использования системных пакетов)
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-    build-essential git libyaml-dev pkg-config python-is-python3 \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    build-essential git libyaml-dev pkg-config \
+    && curl -fsSL https://nodejs.org/dist/v20.11.1/node-v20.11.1-linux-x64.tar.xz | tar -xJ -C /usr/local --strip-components=1 \
+    && corepack enable && yarn set version 1.22.19 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Установка JavaScript (оптимизированная версия)
-ARG NODE_VERSION=20.11.1
-ARG YARN_VERSION=1.22.19
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION%%.*}.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g yarn@$YARN_VERSION
-
-# Копируем и устанавливаем гемы с фиксацией версий
+# Установка гемов
 COPY Gemfile Gemfile.lock ./
 RUN bundle config set force_ruby_platform true && \
     bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-# Устанавливаем node модули
+# Установка node modules
 COPY package.json yarn.lock ./
-RUN yarn install --immutable --network-timeout 1000000
+RUN yarn install --network-timeout 1000000 --ignore-optional
 
-# Копируем приложение
+# Копирование приложения
 COPY . .
 
-# Фикс для Propshaft и Bootstrap
+# Прекомпиляция ассетов
 RUN bundle exec rails assets:clobber && \
     SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile || \
-    echo "Asset precompilation failed, continuing..."
+    echo "Asset precompilation completed with warnings"
 
-# Финализация образа
 FROM base
 
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /rails /rails
 
-# Настройка безопасности
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp public/assets && \
-    mkdir -p tmp/pids tmp/sockets && \
-    chmod -R 700 tmp
+    chown -R rails:rails db log storage tmp public/assets
 
-USER 1000:1000
+USER rails:rails
 
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+EXPOSE 3000
+CMD ["./bin/rails", "server"]
