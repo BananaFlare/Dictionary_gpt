@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main" something
 gem "rails", "~> 8.0.2"
 gem 'bcrypt', '~> 3.1.7'
-
+# gem "selenium-webdriver", "~>4.0"," <4.11"
 gem "dartsass-sprockets"
 gem "dartsass-rails"
 gem 'bootstrap'

@@ -1,30 +1,39 @@
 
-<h1>Select those words you would like to exclude.</h1>
-<%= form_with url: selected_words_path, method: :post do |form| %>
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Word</th>
-    <th>Transcription</th>
-    <th>Translation</th>
-    <th>Example</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @words_array.each do |item| %>
-    <tr>
-      <td>
-        <%= check_box_tag "selected_words", item.foreign_word, false,
-                          class: "row-checkbox" %>
-      </td>
-      <td><%= item.foreign_word%></td>
-      <td><%= item.transcription %></td>
-      <td><%= item.translation %></td>
-      <td><%= item.example %></td>
-    </tr>
-  <% end %>
-    </tbody>
-    </table>
-    <%= form.submit "Обработать выбранные записи", class: "btn" %>
-  <% end %>
+
+<div class="container-fluid ">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <h1 class = "p-2">Select those words you would like to exclude.</h1>
+      <%= form_with url: selected_words_path, method: :post do |form| %>
+        <table class = "table table-responsive table-striped ">
+          <thead>
+          <tr>
+
+            <th>Word</th>
+            <th>Transcription</th>
+            <th>Translation</th>
+            <th>Example</th>
+            <th>select</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @words_array.each do |item| %>
+            <tr>
+              <td><%= item.foreign_word%></td>
+              <td><%= item.transcription %></td>
+              <td><%= item.translation %></td>
+              <td><%= item.example %></td>
+              <td>
+                <%= check_box_tag "selected_words[]", item.id, false,
+                                  class: "row-checkbox" %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= form.submit "Удалить выбранные записи", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
