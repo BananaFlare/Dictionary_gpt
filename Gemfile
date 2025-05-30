@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-
+gem "caracal"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main" something
 gem "rails", "~> 8.0.2"
 gem 'bcrypt', '~> 3.1.7'
