@@ -141,7 +141,6 @@
   // Мотивирующие фразы
   const motivationPhrases = [
     "Анализируем ваш текст...",
-    "Скоро вы станете умнее!",
     "Готовим полезные термины...",
     "Знания уже на подходе!",
     "Это будет лучший глоссарий!",
@@ -162,12 +161,12 @@
         // Показываем лоадер
         fullpageLoader.style.display = 'flex';
         
-        // Меняем мотивирующие фразы каждые 3 секунды
+        // Меняем мотивирующие фразы каждые 5 секунды
         let phraseIndex = 0;
         const phraseInterval = setInterval(() => {
           phraseIndex = (phraseIndex + 1) % motivationPhrases.length;
           motivationText.textContent = motivationPhrases[phraseIndex];
-        }, 3000);
+        }, 5000);
         
         // Остановка при скрытии лоадера (если нужно)
         // window.addEventListener('loader:hide', () => {
