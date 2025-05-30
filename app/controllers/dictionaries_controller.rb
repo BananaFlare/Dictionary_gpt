@@ -46,7 +46,7 @@ class DictionariesController < ApplicationController
       table_arr.push(elem)
     end
 
-    title = "doc_#{Time}"
+    title = "doc_#{Time.now}"
 
     temp_file = Tempfile.new(['report', '.docx', Rails.root.join('tmp')], binmode: false)
 
@@ -67,7 +67,7 @@ class DictionariesController < ApplicationController
 
 
 
-      # send_file ("#{temp_file.path}", filename: 'report.docx',type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',disposition: :attachment)
+
 
 
 
