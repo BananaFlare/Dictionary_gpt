@@ -18,6 +18,6 @@ module DictionaryService
     words_array.each do |el|
       Word.create(dictionary_id: dict.id,foreign_word: el[0],transcription: el[1],translation: el[2],example: el[3])
     end
-    return Word.select(:id,:foreign_word, :transcription,:translation,:example).where(dictionary_id: dict.id).to_a
+    return Word.where(dictionary_id: dict.id).to_a
   end
 end

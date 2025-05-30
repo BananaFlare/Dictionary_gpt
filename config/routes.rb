@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
   post "/input_link",to: "input_link#accept_link"
-  post "/selected_words", to: "user_interaction#exclude_words"
+  post "/dictionaries/:dict_id/exclude_words", to: "dictionaries#exclude_words"
+  post "/dictionaries/:dict_id/docx", to: "dictionaries#docx"
   resources :dictionaries
 end

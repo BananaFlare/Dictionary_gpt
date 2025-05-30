@@ -1,0 +1,25 @@
+
+
+<table class = "table table-responsive table-striped ">
+  <thead>
+  <tr>
+
+    <th>Word</th>
+    <th>Transcription</th>
+    <th>Translation</th>
+    <th>Example</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% @final_words.each do |item| %>
+    <tr>
+      <td><%= item.foreign_word%></td>
+      <td><%= item.transcription %></td>
+      <td><%= item.translation %></td>
+      <td><%= item.example %></td>
+
+    </tr>
+  <% end %>
+  </tbody>
+</table>

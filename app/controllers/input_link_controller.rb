@@ -11,5 +11,6 @@ class InputLinkController < ApplicationController
 
     @words_array = DictionaryService.words_table_create(@link, @current_user)
     render :'input_link/input_link'
+
   end
 end
