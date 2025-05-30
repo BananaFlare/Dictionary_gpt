@@ -8,6 +8,8 @@ gem "dartsass-sprockets"
 gem "dartsass-rails"
 gem 'bootstrap'
 
+gem 'caracal'
+
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
