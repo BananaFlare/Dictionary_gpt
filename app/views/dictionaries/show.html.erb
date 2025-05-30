@@ -1,0 +1,30 @@
+
+
+<table class = "table table-responsive table-striped ">
+  <thead>
+  <tr>
+
+    <th>Word</th>
+    <th>Transcription</th>
+    <th>Translation</th>
+    <th>Example</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% @words.each do |item| %>
+    <tr>
+      <td><%= item.foreign_word%></td>
+      <td><%= item.transcription %></td>
+      <td><%= item.translation %></td>
+      <td><%= item.example %></td>
+
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= form_with url:  "#{dictionaries_path}/#{@dict_id}/docx", method: :post do |form| %>
+  <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
+  <%= form.submit "Сформировать Docx", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
+<% end %>
