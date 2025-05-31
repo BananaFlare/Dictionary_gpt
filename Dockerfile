@@ -7,7 +7,7 @@ RUN apt-get update -qq && \
     libpq-dev \
     postgresql-client \
     curl && \
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g yarn
 
