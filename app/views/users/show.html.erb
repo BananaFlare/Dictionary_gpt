@@ -22,5 +22,28 @@
             Для изменения информации обратитесь к администратору системы.
         </p>
     </div>
+
+    <table class = "table table-responsive table-striped ">
+      <thead>
+      <tr>
+
+        <th>dict</th>
+
+
+      </tr>
+      </thead>
+      <tbody>
+      <% @dict.each do |item| %>
+        <tr>
+          <td><%= item.link %></td>
+
+
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+
+
 </body>
 </html>

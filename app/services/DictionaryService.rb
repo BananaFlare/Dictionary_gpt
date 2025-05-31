@@ -2,12 +2,13 @@ require_relative './ParsingPageService'
 require_relative 'ApiDeepSeekService'
 require_relative 'ParsingTextService'
 module DictionaryService
-  def self.words_table_create(link,user)
-    dict =  unless user.nil?
-        Dictionary.create(link: link, user_id: user.id)
-      else
-        Dictionary.create(link: link)
-      end
+  def self.words_table_create(link, user)
+
+    dict = if user.nil?
+             Dictionary.create(link: link)
+           else
+             Dictionary.create(link: link, user_id: user.id)
+           end
     Rails.logger.info dict
     text = Parsing_page.page_content(link)
     # prompt = "выдели из статьи слова, которые могут быть непонятны уровню английского A2. В ответе оставь только найденные слова в формате: слово или абреввиатура (расшифровать) ** транскрипция ** перевод ** очень короткий пример использования слова из текста (без переносов строки). конец формата следующая строка. В ответе оставь только найденные слова#{text}"
@@ -16,7 +17,7 @@ module DictionaryService
     # p response
     words_array = TextParser.text_parser(response)
     words_array.each do |el|
-      Word.create(dictionary_id: dict.id,foreign_word: el[0],transcription: el[1],translation: el[2],example: el[3])
+      Word.create(dictionary_id: dict.id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
     end
     return Word.where(dictionary_id: dict.id).to_a
   end

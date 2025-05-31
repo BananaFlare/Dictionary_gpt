@@ -17,6 +17,9 @@ class UsersController < ApplicationController
   def show
     if session[:user_id].present?
       @user = User.find(session[:user_id])
+      p @user.id
+      @dict = Dictionary.where(user_id: @user.id).to_a
+      p @dict
     else
       redirect_to login_path, alert: 'Пожалуйста, войдите в систему.'
     end
