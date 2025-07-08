@@ -7,7 +7,7 @@ require 'faraday'
 DEEPSEEK_API_KEY = Rails.application.credentials[:deep_seek_api_key]
 
 module ApiDeepSeek
-  API_URL = 'https://hubai.loe.gg/v1/chat/completions' # Example endpoint
+  API_URL = 'https://hubai.loe.gg/v1/chat/completions'
 
   def self.call_deepseek_api(prompt)
     headers = {

@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
   end
-
+  #возможно нужно сразу входить в сесию, т.е создавать ее прям тут
   def create
     @user = User.new(user_params)
     if @user.save
@@ -15,6 +15,7 @@ class UsersController < ApplicationController
   end
 
   def show
+
     if session[:user_id].present?
       @user = User.find(session[:user_id])
     else

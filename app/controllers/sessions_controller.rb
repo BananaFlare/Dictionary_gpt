@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def authorisation; end
-
+  # обработка случая когда пользователь пытаестся зайти под несуществующим аккаунтом
+  # по идее должна быть не здесь а в user
+  # и наверное должно быть сделано через validates
   def create
     user = User.find_by(email: params[:email].downcase)
     if user.nil?
@@ -8,8 +10,8 @@ class SessionsController < ApplicationController
       flash.now[:alert] = 'Пользователь с таким email не найден'
       render :authorisation and return
     end
-
     if user&.authenticate(params[:password]) && user.enabled?
+
       session[:user_id] = user.id
       LoggerService.info("Пользователь #{user.email} успешно вошел в систему") if LoggerService.enabled?
       redirect_to profile_path
