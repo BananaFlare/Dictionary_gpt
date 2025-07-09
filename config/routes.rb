@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   # post "/input_link",to: "input_link#accept_link"
   post "/input_link", to: "dictionaries#create"
+  get "/dictionaries/:dict_id", to: "dictionaries#show"
   post "/dictionaries/:dict_id/exclude_words", to: "dictionaries#exclude_words"
   post "/dictionaries/:dict_id/docx", to: "dictionaries#docx"
   resources :dictionaries

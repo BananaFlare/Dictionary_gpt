@@ -24,7 +24,7 @@
   </tbody>
 </table>
 
-<%= form_with url:  "#{dictionaries_path}/#{@dict_id}/docx", method: :post do |form| %>
+<%= form_with url:  "/dictionaries/#{@dict_id}/docx", method: :post do |form| %>
   <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
   <%= form.submit "Сформировать Docx", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
 <% end %>

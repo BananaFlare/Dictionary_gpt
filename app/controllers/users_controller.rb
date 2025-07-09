@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   end
   #возможно нужно сразу входить в сесию, т.е создавать ее прям тут
   def create
+    p user_params
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id

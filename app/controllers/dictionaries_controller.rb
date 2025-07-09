@@ -7,21 +7,31 @@ class DictionariesController < ApplicationController
   end
 
   def create
-    user_id = session[:user_id]
+    if session[:user_id].nil?
+      # password = SecureRandom.alphanumeric(11).chars.shuffle.join
+      password = "qwerty"
+      tmp_user = User.new(
+        email: "TMP#{Time.now.to_i}@temp.com",
+        password: password,  # передаём пароль через виртуальный атрибут
+        temp: true
+      )
+      tmp_user.save
+      user_id = tmp_user.id
+    else
+      user_id = session[:user_id]
+    end
+    p user_id
     @link = params[:body][:link].chomp
     Rails.logger.info @link
     if DictionariesController.accept_link (@link)
-      dict =  unless user_id.nil?
-                Dictionary.create(link: @link, user_id: user_id.id)
-              else
-                Dictionary.create(link: @link)
-              end
+      dict = Dictionary.create(link: @link, user_id: user_id)
+      p dict.id
+      p dict.user_id
       raw_word_list = DictionaryService.words_list_from_ai(@link)
       words_array = TextParser.text_parser(raw_word_list)
       words_array.each do |el|
         Word.create(dictionary_id: dict.id,foreign_word: el[0],transcription: el[1],translation: el[2],example: el[3])
       end
-
 
     else
       # отрисовать страничку или сообщение через flash о том что ссылка не сработала
@@ -30,13 +40,12 @@ class DictionariesController < ApplicationController
     # Здесь должен быть вызов функции поиска слов и создание самих слов.
     # еще я написал в доке что сюдоа можно дописать, но это не критично.
     # Почитай на всякий случай про то что умеют делать дефолтные конструкторы
+    redirect_to dictionary_path(dict.id)
   end
 
   def show
-    @dict_id = params[:id]
-    # @dict = Dictionary.find(@dict_id)
+    @dict_id = params[:dict_id]
     @words = Word.where(dictionary_id: @dict_id).to_a
-
   end
 
   def exclude_words
