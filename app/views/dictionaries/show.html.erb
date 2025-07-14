@@ -1,5 +1,7 @@
 
+<!--<%#= form_with url:"/dictionaries/#{@dict_id}/exclude_words", html:{class: 'send_words_form1'},method: :post do |form| %> #obsolete-->
 
+<%= form_with url:"/dictionaries/#{@dict_id}/process_table", html:{class: 'send_words_form1'},method: :post do |form| %>
 <table class = "table table-responsive table-striped ">
   <thead>
   <tr>
@@ -8,7 +10,7 @@
     <th>Transcription</th>
     <th>Translation</th>
     <th>Example</th>
-
+    <th>Select</th>
   </tr>
   </thead>
   <tbody>
@@ -18,13 +20,62 @@
       <td><%= item.transcription %></td>
       <td><%= item.translation %></td>
       <td><%= item.example %></td>
-
+      <td>
+        <%= check_box_tag "selected_words[]", item.id, false,
+                          class: "row-checkbox" %>
+      </td>
     </tr>
   <% end %>
+  <tr>
+    <td>
+      <input type="text " placeholder="введите слово" class="input-append-word">
+      <button class="btn append-word" >Добавить</button>
+    </td>
+  </tr>
+
   </tbody>
 </table>
-
+<%= form.hidden_field :authenticity_token, value: form_authenticity_token %>
+<%= form.submit "Удалить выбранные записи", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
+<% end %>
 <%= form_with url:  "/dictionaries/#{@dict_id}/docx", method: :post do |form| %>
   <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
   <%= form.submit "Сформировать Docx", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
 <% end %>
+
+<%= form_with  url: "/dictionaries/#{@dict_id}/add_words",html:{class: 'send_words_form'},method: :post do |form| %>
+  <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
+  <%= form.submit "добавить слова", class: "mt-5 btn btn-primary px-4 py-3 fw-bold send_button" %>
+<% end %>
+<script>
+  let parent = document.querySelector("tbody");
+
+
+  let button = document.querySelector(".append-word");
+  button.addEventListener('click',appendRow,false);
+  words_to_add=[]
+
+  let send_words_form = document.querySelector('.send_words_form1');
+
+  function appendRow(event) {
+      let children = parent.children;
+      event.preventDefault();
+      let inp=document.querySelector('.input-append-word');
+      let el_row=document.createElement("tr");
+
+      let el_td=document.createElement("td");
+      el_row.appendChild(el_td);
+      el_td.innerHTML=inp.value
+      words_to_add.push(inp.value)
+      if (children.length>=2){
+          children[children.length-2].after(el_row)
+      }
+      let input_word = document.createElement('input');
+      input_word.style.visibility = 'hidden';
+      input_word.name = 'added_words[]'
+      input_word.value = inp.value;
+      inp.value = "";
+      send_words_form.appendChild(input_word);
+  }
+
+</script>

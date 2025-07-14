@@ -1,5 +1,6 @@
 require 'caracal'
 require_relative '../services/DictionaryService'
+
 class DictionariesController < ApplicationController
 
   def new
@@ -7,19 +8,7 @@ class DictionariesController < ApplicationController
   end
 
   def create
-    if session[:user_id].nil?
-      # password = SecureRandom.alphanumeric(11).chars.shuffle.join
-      password = "qwerty"
-      tmp_user = User.new(
-        email: "TMP#{Time.now.to_i}@temp.com",
-        password: password,  # передаём пароль через виртуальный атрибут
-        temp: true
-      )
-      tmp_user.save
-      user_id = tmp_user.id
-    else
-      user_id = session[:user_id]
-    end
+    user_id = DictionaryService.user_id_or_temp_user_creation(session)
     p user_id
     @link = params[:body][:link].chomp
     Rails.logger.info @link
@@ -30,7 +19,7 @@ class DictionariesController < ApplicationController
       raw_word_list = DictionaryService.words_list_from_ai(@link)
       words_array = TextParser.text_parser(raw_word_list)
       words_array.each do |el|
-        Word.create(dictionary_id: dict.id,foreign_word: el[0],transcription: el[1],translation: el[2],example: el[3])
+        Word.create(dictionary_id: dict.id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
       end
 
     else
@@ -49,14 +38,54 @@ class DictionariesController < ApplicationController
   end
 
   def exclude_words
+    p params
     exclude_words = params[:selected_words]
     unless exclude_words.nil?
       exclude_words.each do |word|
         Word.delete(word)
       end
     end
-    dict_id = params[:dict_id]
-    redirect_to dictionary_path(dict_id)
+    @dict_id = params[:dict_id]
+    redirect_to dictionary_path(@dict_id)
+  end
+
+  def process_table_changes
+    p params
+    @dict_id = params[:dict_id]
+    exclude_words = params[:selected_words]
+    unless exclude_words.nil?
+      exclude_words.each do |word|
+        Word.delete(word)
+      end
+    end
+
+    include_words = params[:added_words]
+
+    p include_words
+    unless include_words.nil?
+      raw_word_list = DictionaryService.add_words_from_ai(include_words)
+      words_array = TextParser.text_parser(raw_word_list)
+      words_array.each do |el|
+        Word.create(dictionary_id: @dict_id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
+      end
+    end
+    redirect_to dictionary_path(@dict_id)
+  end
+
+  def add_words
+    p params
+    words = params[:added_words]
+
+    p words
+    unless words.nil?
+      raw_word_list = DictionaryService.add_words_from_ai(words)
+      @dict_id = params[:dict_id]
+      words_array = TextParser.text_parser(raw_word_list)
+      words_array.each do |el|
+        Word.create(dictionary_id: @dict_id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
+      end
+      redirect_to dictionary_path(@dict_id)
+    end
   end
 
   def docx
@@ -103,45 +132,9 @@ class DictionariesController < ApplicationController
 
     end
   end
-  def generate_docx (words)
-    array = words
-    array.each_with_index do |elem, index|
-      if elem[0] != (index + 1).to_s
-        elem[0] = (index + 1).to_s
-      end
-    end
 
-    table_arr = [["№", "Word", "Transcription", "Translation", "Example"]]
-    array.each do |elem|
-      table_arr.push(elem)
-    end
-
-    title = "doc_#{Time}"
-
-    temp_file = Tempfile.new(['report', '.docx'], binmode: false)
-    begin
-      Caracal::Document.save(temp_file.path) do |doc|
-        doc.h1 title
-        doc.table table_arr do
-          cell_style rows[0], background: "dddddd", bold: true
-        end
-      end
-      send_file temp_file.path,
-                filename: 'report.docx',
-                type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                disposition: :attachment
-
-      # Убедимся, что файл будет удален
-      temp_file.close
-    ensure
-      temp_file.unlink # Удаление файла
-    end
-
-
-
-
-  end
   private
+
   def self.accept_link (link)
 
     pattern = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/
