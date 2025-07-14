@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
 
   def destroy
     LoggerService.info("Пользователь вышел из системы") if LoggerService.enabled?
-    session.delete(:user_id)
+    # session.delete(:user_id)
     redirect_to root_path, notice: 'Вы вышли'
   end
 end

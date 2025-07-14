@@ -13,6 +13,9 @@
         </div>
         
         <div class="profile-info">
+          <% if @user.temp == true %>
+          <h1>Временный пользователь</h1>
+          <% end %>
             <div class="info-item">
                 <strong>Email:</strong> <%= @user.email %>
             </div>

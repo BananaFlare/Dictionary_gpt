@@ -1,5 +1,5 @@
 
-<!--<%#= form_with url:"/dictionaries/#{@dict_id}/exclude_words", html:{class: 'send_words_form1'},method: :post do |form| %> #obsolete-->
+
 
 <%= form_with url:"/dictionaries/#{@dict_id}/process_table", html:{class: 'send_words_form1'},method: :post do |form| %>
 <table class = "table table-responsive table-striped ">
@@ -36,17 +36,13 @@
   </tbody>
 </table>
 <%= form.hidden_field :authenticity_token, value: form_authenticity_token %>
-<%= form.submit "Удалить выбранные записи", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
+<%= form.submit "обработать выбранные записи", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
 <% end %>
 <%= form_with url:  "/dictionaries/#{@dict_id}/docx", method: :post do |form| %>
   <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
   <%= form.submit "Сформировать Docx", class: "mt-5 btn btn-primary px-4 py-3 fw-bold" %>
 <% end %>
 
-<%= form_with  url: "/dictionaries/#{@dict_id}/add_words",html:{class: 'send_words_form'},method: :post do |form| %>
-  <%#= form.hidden_field :authenticity_token, value: form_authenticity_token %>
-  <%= form.submit "добавить слова", class: "mt-5 btn btn-primary px-4 py-3 fw-bold send_button" %>
-<% end %>
 <script>
   let parent = document.querySelector("tbody");
 

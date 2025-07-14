@@ -37,17 +37,7 @@ class DictionariesController < ApplicationController
     @words = Word.where(dictionary_id: @dict_id).to_a
   end
 
-  def exclude_words
-    p params
-    exclude_words = params[:selected_words]
-    unless exclude_words.nil?
-      exclude_words.each do |word|
-        Word.delete(word)
-      end
-    end
-    @dict_id = params[:dict_id]
-    redirect_to dictionary_path(@dict_id)
-  end
+
 
   def process_table_changes
     p params
@@ -72,21 +62,6 @@ class DictionariesController < ApplicationController
     redirect_to dictionary_path(@dict_id)
   end
 
-  def add_words
-    p params
-    words = params[:added_words]
-
-    p words
-    unless words.nil?
-      raw_word_list = DictionaryService.add_words_from_ai(words)
-      @dict_id = params[:dict_id]
-      words_array = TextParser.text_parser(raw_word_list)
-      words_array.each do |el|
-        Word.create(dictionary_id: @dict_id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
-      end
-      redirect_to dictionary_path(@dict_id)
-    end
-  end
 
   def docx
     dict_id = params[:dict_id]

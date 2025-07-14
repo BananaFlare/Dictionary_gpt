@@ -17,8 +17,9 @@ module ApiDeepSeek
 
     body = {
       model: "deepseek-chat", # Specify the model to use
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.0, # Adjust creativity (0 = strict, 1 = creative)
+      messages: [{ role: "user", content: prompt },
+                 {role: "system", content: "Ты — лингвистический ассистент. Отвечай СТРОГО в формате: слово**транскрипция**перевод**пример. Никаких пояснений!"}],
+      temperature: 0.1, # Adjust creativity (0 = strict, 1 = creative)
 
     }.to_json
 
