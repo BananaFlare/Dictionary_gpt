@@ -13,7 +13,7 @@ module DictionaryService
     # prompt = "выдели из статьи слова, которые могут быть непонятны уровню английского A2. В ответе оставь только найденные слова в формате: слово или абреввиатура (расшифровать) ** транскрипция ** перевод ** очень короткий пример использования слова из текста (без переносов строки). конец формата следующая строка. В ответе оставь только найденные слова#{text}"
     prompt = "В ответе не добавляй ничего от себя. выдели из статьи слова, которые могут быть непонятны уровню английского A2. В ответе оставь только найденные слова строго в формате списка. Ровно 4 слова в строке, где разделителем выступает **. Слово или абреввиатура (расшифровать), транскрипция , перевод , очень короткий пример использования слова из текста (без переносов строки).Например Subjective well-being (SWB)**/səbˈdʒektɪv wɛl ˈbiːɪŋ/**субъективное благополучие** SWB measures how happy people feel in their daily lives. В ответе оставь только найденные слова, не используй вступление#{text}"
     response = ApiDeepSeek.call_deepseek_api(prompt)
-    # p response
+
     words_array = TextParser.text_parser(response)
     words_array.each do |el|
       Word.create(dictionary_id: dict.id,foreign_word: el[0],transcription: el[1],translation: el[2],example: el[3])
@@ -28,7 +28,7 @@ module DictionaryService
     # prompt = "выдели из статьи слова, которые могут быть непонятны уровню английского A2. В ответе оставь только найденные слова в формате: слово или абреввиатура (расшифровать) ** транскрипция ** перевод ** очень короткий пример использования слова из текста (без переносов строки). конец формата следующая строка. В ответе оставь только найденные слова#{text}"
     prompt = "В ответе не добавляй ничего от себя. выдели из статьи слова, которые могут быть непонятны уровню английского A2. В ответе оставь только найденные слова в формате списка, где разделителем выступает **. Слово или абреввиатура (расшифровать), транскрипция , перевод , очень короткий пример использования слова из текста (без переносов строки).Например Subjective well-being (SWB)**/səbˈdʒektɪv wɛl ˈbiːɪŋ/**субъективное благополучие** SWB measures how happy people feel in their daily lives. В ответе оставь только найденные слова, не используй вступление#{text}"
     response = ApiDeepSeek.call_deepseek_api(prompt)
-    p response
+
     return response
   end
   def self.add_words_from_ai(words)
@@ -36,24 +36,8 @@ module DictionaryService
     p text
     prompt = "В ответе не добавляй ничего от себя. Для заданных слов выдай то что просит формат. В ответе оставь только найденные слова в формате списка, где разделителем выступает **. Слово или абреввиатура (расшифровать), транскрипция , перевод , очень короткий пример использования слова из текста (без переносов строки).Например Subjective well-being (SWB)**/səbˈdʒektɪv wɛl ˈbiːɪŋ/**субъективное благополучие** SWB measures how happy people feel in their daily lives. В ответе оставь только найденные слова, не используй вступление#{text}"
     response = ApiDeepSeek.call_deepseek_api(prompt)
-    p response
+
     return response
   end
-  def self.user_id_or_temp_user_creation(session)
-    if session[:user_id].nil?
-      # password = SecureRandom.alphanumeric(11).chars.shuffle.join
-      password = "qwerty"
-      tmp_user = User.new(
-        email: "TMP#{Time.now.to_i}@temp.com",
-        password: password,  # передаём пароль через виртуальный атрибут
-        temp: true
-      )
-      tmp_user.save
-      user_id = tmp_user.id
-    else
-      user_id = session[:user_id]
-    end
-    session[:user_id] = user_id
-    return user_id
-  end
+
 end

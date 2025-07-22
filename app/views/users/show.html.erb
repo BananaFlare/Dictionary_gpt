@@ -12,15 +12,24 @@
         </div>
         
         <div class="profile-info">
+          <% if @user.temp %>
             <div class="info-item">
-                <strong>Email:</strong> <%= @user.email %>
+              <strong>Вы - временный пользователь</strong>
+              <p>чтобы сохранить созданные словри создайте или войдите в аккаунт</p>
             </div>
+          <%else %>
+            <div class="info-item">
+              <strong>Email:</strong> <%= @user.email %>
+            </div>
+            <p class="text-block">
+              Здесь вы можете просмотреть и изменить свои личные данные.
+              Для изменения информации обратитесь к администратору системы.
+            </p>
+          <% end %>
+
         </div>
-        
-        <p class="text-block">
-            Здесь вы можете просмотреть и изменить свои личные данные.
-            Для изменения информации обратитесь к администратору системы.
-        </p>
+        <%= link_to "Созданные словари",dictionaries_path, class: "no-color-change"  %>
+
     </div>
 </body>
 </html>

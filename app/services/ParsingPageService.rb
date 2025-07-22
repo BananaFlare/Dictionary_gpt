@@ -7,7 +7,6 @@ module Parsing_page
     Webdrivers.install_dir = __dir__
 
     firefox_path = `which firefox`.strip
-    p firefox_path
     # options = Selenium::WebDriver::Firefox::Options.new
     options = Selenium::WebDriver::Firefox::Options.new(args: ['-headless'])
     profile = Selenium::WebDriver::Firefox::Profile.new
@@ -16,7 +15,7 @@ module Parsing_page
     profile['dom.ipc.plugins.enabled.libflashplayer.so'] = false
     profile['browser.pageload.strategy'] = 'eager'
     options.profile = profile
-    # p profile
+
     options.binary = firefox_path
 
     ENV['TMPDIR'] = "#{Dir.home}/tmp"

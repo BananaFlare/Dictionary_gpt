@@ -1,5 +1,6 @@
 require 'caracal'
 require_relative '../services/DictionaryService'
+require_relative '../services/UserService'
 
 class DictionariesController < ApplicationController
 
@@ -8,20 +9,20 @@ class DictionariesController < ApplicationController
   end
 
   def create
-    user_id = DictionaryService.user_id_or_temp_user_creation(session)
-    p user_id
+    user_id = UserService.user_id_or_temp_user_creation(session)
+
     @link = params[:body][:link].chomp
     Rails.logger.info @link
     if DictionariesController.accept_link (@link)
-      dict = Dictionary.create(link: @link, user_id: user_id)
-      p dict.id
-      p dict.user_id
+
       raw_word_list = DictionaryService.words_list_from_ai(@link)
       words_array = TextParser.text_parser(raw_word_list)
-      words_array.each do |el|
-        Word.create(dictionary_id: dict.id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
+      unless words_array.nil?
+        dict = Dictionary.create(link: @link, user_id: user_id)
+        words_array.each do |el|
+          Word.create(dictionary_id: dict.id, foreign_word: el[0], transcription: el[1], translation: el[2], example: el[3])
+        end
       end
-
     else
       # отрисовать страничку или сообщение через flash о том что ссылка не сработала
       # кстати говоря надо бы еще как то обрабатывать случаи когда ссылка 404
@@ -37,7 +38,12 @@ class DictionariesController < ApplicationController
     @words = Word.where(dictionary_id: @dict_id).to_a
   end
 
-
+  def index
+    @user_id = session[:user_id]
+    @dicts = Dictionary.where(user_id: @user_id)
+    p "___________"
+    p @user_id
+  end
 
   def process_table_changes
     p params
@@ -61,7 +67,6 @@ class DictionariesController < ApplicationController
     end
     redirect_to dictionary_path(@dict_id)
   end
-
 
   def docx
     dict_id = params[:dict_id]

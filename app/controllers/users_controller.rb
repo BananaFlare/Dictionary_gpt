@@ -7,7 +7,15 @@ class UsersController < ApplicationController
     p user_params
     @user = User.new(user_params)
     if @user.save
+      if User.find(session[:user_id])&.temp
+        unless Dictionary.find_by(user_id: session[:user_id]).nil?
+          UserService.dictionaries_transfer_from_temp_to_permanent(@user.id,session[:user_id])
+        end
+      else
+
+      end
       session[:user_id] = @user.id
+
       redirect_to profile_path, notice: 'Регистрация прошла успешно'
     else
       flash.now[:alert] = 'Ошибка регистрации. Пожалуйста, проверьте введённые данные.'
