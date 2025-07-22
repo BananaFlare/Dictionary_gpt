@@ -16,12 +16,14 @@ class SessionsController < ApplicationController
     end
 
     if user&.authenticate(params[:password])
-
-      tmp_user_id = session[:user_id]
-      tmp_user = User.find(tmp_user_id)
-      if tmp_user.temp
-        UserService.dictionaries_transfer_from_temp_to_permanent(user.id, tmp_user_id)
+      unless session[:user_id].nil?
+        tmp_user_id = session[:user_id]
+        tmp_user = User.find(tmp_user_id)
+        if tmp_user.temp
+          UserService.dictionaries_transfer_from_temp_to_permanent(user.id, tmp_user_id)
+        end
       end
+
       session[:user_id] = user.id
       LoggerService.info("Пользователь #{user.email} успешно вошел в систему") if LoggerService.enabled?
 
