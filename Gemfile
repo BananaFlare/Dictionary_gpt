@@ -8,7 +8,7 @@ gem "dartsass-sprockets"
 gem "dartsass-rails"
 gem 'bootstrap'
 
-# gem "rspec-rails"
+gem "rspec-rails"
 
 gem "devise"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
