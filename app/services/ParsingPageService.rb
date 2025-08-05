@@ -8,7 +8,7 @@ module Parsing_page
 
     firefox_path = `which firefox`.strip
     # options = Selenium::WebDriver::Firefox::Options.new
-    options = Selenium::WebDriver::Firefox::Options.new(args: ['-headless'])
+    options = Selenium::WebDriver::Firefox::Options.new(args: ['-headless'],binary: ["/usr/bin/firefox-esr"])
     profile = Selenium::WebDriver::Firefox::Profile.new
 
     profile['permissions.default.image'] = 2 # Отключаем изображения
