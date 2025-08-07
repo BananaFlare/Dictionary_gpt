@@ -1,7 +1,7 @@
 
 
 
-<%= form_with url:"/dictionaries/#{@dict_id}/process_table", html:{class: 'send_words_form1'},method: :post do |form| %>
+<%= form_with url:"/dictionaries/#{@dict_id}/edit", html:{class: 'send_words_form1'},method: :patch do |form| %>
 <table class = "table table-responsive table-striped ">
   <thead>
   <tr>

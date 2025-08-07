@@ -10,8 +10,7 @@ gem 'bootstrap'
 
 gem "rspec-rails"
 
-gem "devise"
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"

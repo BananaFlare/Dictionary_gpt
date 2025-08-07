@@ -9,7 +9,12 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.2.3
+ARG master_key
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+
+
+
+
 
 # Rails app lives here
 WORKDIR /rails
@@ -33,7 +38,9 @@ RUN apt-get update -qq && \
 ## Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git pkg-config \
-    -esr libvips
+    libvips
+
+RUN apt-get install -y firefox-esr
 #    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 #
 
@@ -60,10 +67,11 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 
-
+RUN rails db:migrate
+RUN RAILS_MASTER_KEY 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 
 EXPOSE 3000
-CMD ["./bin/thrust", "./bin/rails", "server"]
+CMD ["./bin/thrust", "./bin/rails", "server", "-b", "0.0.0.0"]

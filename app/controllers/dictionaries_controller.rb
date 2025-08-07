@@ -45,9 +45,12 @@ class DictionariesController < ApplicationController
     p @user_id
   end
 
-  def process_table_changes
-    p params
+  def edit
+    
     @dict_id = params[:dict_id]
+    unless Dictionary.find(@dict_id) == session[:user_id]
+      redirect_to 
+    end
     exclude_words = params[:selected_words]
     unless exclude_words.nil?
       exclude_words.each do |word|
@@ -56,8 +59,6 @@ class DictionariesController < ApplicationController
     end
 
     include_words = params[:added_words]
-
-    p include_words
     unless include_words.nil?
       raw_word_list = DictionaryService.add_words_from_ai(include_words)
       words_array = TextParser.text_parser(raw_word_list)
