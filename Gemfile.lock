@@ -375,9 +375,11 @@ GEM
     sassc-embedded (1.80.4)
       sass-embedded (~> 1.80)
     securerandom (0.4.1)
-    selenium-webdriver (4.10.0)
+    selenium-webdriver (4.35.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
+      rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     solid_cable (3.0.8)
       actioncable (>= 7.2)
@@ -491,7 +493,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rspec-rails
   rubocop-rails-omakase
-  selenium-webdriver (~> 4.0, < 4.11)
+  selenium-webdriver (~> 4.35)
   solid_cable
   solid_cache
   solid_queue
